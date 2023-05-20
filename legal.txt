@@ -1,0 +1,63 @@
+Ideas for types of claims to focus on:
+
+1. Defamation (https://www.justia.com/trials-litigation/docs/caci/1700/1704/)
+
+	A. Element 1: Person A said something to Person B 
+
+	B. Element 2: Person B understood that what was said was about Person A
+
+	C. Element 3: Person B said that what was said meant that Person A had done something wrong
+
+	D. Element 4: Person A failed to use reasonable care todetermine the truth or falsity of the statement(s)
+
+2. Negligence (https://www.justia.com/trials-litigation/docs/caci/400/400/)
+
+	A. Element 1: Defendant was negligent
+
+	B. Element 2: Plaintiff was harmed
+
+	C. Element 3: The negligence of Defendant was a substantial factor in Plaintiff's harm
+
+3. Breach of contract ("cause of action for damages for breach of contract is comprised of the following elements: (1) the contract, (2) plaintiff's performance or excuse for nonperformance, (3) defendant's breach, and (4) the resulting damages to plaintiff.")
+
+  A. Element 1: A contract exists
+  
+  B. Element 2: Plaintiff's performance or excuse for non-performance
+  
+  C. Element 3: Defendant's Breach
+  
+  D. Element 4: Resulting damages to plaintiff
+
+Complaint structure (format of numbered paragraphs):
+
+1. Caption
+
+2. Introduction: summary of facts
+
+  [LLM concise summary of facts]
+
+3. Jurisdiction: pretty much hard coded
+
+4. Venue: since we're doing California only, pretty much hard coded
+
+5. Parties
+
+  [Loop for each plaintiff described]
+
+  [Loop for each defendant described]
+
+6. Factual Background
+
+  [LLM numbered paragraph for each material fact]
+
+7. Claims (1...n)
+
+  [Loop for each claim]
+  
+    [Loop to make sure the filer has satisifed each element of the claim described above]
+
+8. Relief Requested
+
+9. Request for Jury Trial
+
+10. Signature Block
