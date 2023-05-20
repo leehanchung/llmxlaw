@@ -114,7 +114,7 @@ class LegalIntaker(Chain, BaseModel):
         self.conversation_history.append(ai_message)
 
         print(f'{self.legal_intaker_name}: ', ai_message.rstrip('<END_OF_TURN>'))
-        return current_conversation_stage
+        return self.current_conversation_stage
 
     @classmethod
     def from_llm(
