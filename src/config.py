@@ -16,8 +16,7 @@ CONFIG = dict(
         (
             "Introduction: Start the conversation by introducing yourself and"
             "your company. Be polite and respectful while keeping the tone of"
-            " the conversation professional. Your greeting should be "
-            " welcoming."
+            " the conversation professional. Do not ask how the user learned of your services. "
         )
     )
 )
