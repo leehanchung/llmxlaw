@@ -86,8 +86,6 @@ class LegalIntaker(Chain, BaseModel):
             conversation_history='"\n"'.join(self.conversation_history), current_conversation_stage=self.current_conversation_stage)
 
         self.current_conversation_stage = self.retrieve_conversation_stage(conversation_stage_id)
-  
-        print(f"Conversation Stage: {self.current_conversation_stage}")
         return conversation_stage_id
         
     def human_step(self, human_input):
@@ -96,7 +94,8 @@ class LegalIntaker(Chain, BaseModel):
         self.conversation_history.append(human_input)
 
     def step(self):
-        self._call(inputs={})
+        stage = self._call(inputs={})
+        return stage
 
     def _call(self, inputs: Dict[str, Any]) -> None:
         """Run one step of the sales agent."""
@@ -115,7 +114,7 @@ class LegalIntaker(Chain, BaseModel):
         self.conversation_history.append(ai_message)
 
         print(f'{self.legal_intaker_name}: ', ai_message.rstrip('<END_OF_TURN>'))
-        return {}
+        return current_conversation_stage
 
     @classmethod
     def from_llm(
@@ -141,13 +140,14 @@ def main():
     stage = 1
     legal_agent.seed_agent()
     while True:
+        print(f"Conversation Stage: {legal_agent.current_conversation_stage}")
+        legal_agent.determine_conversation_stage()
+        legal_agent.step()
         stage = legal_agent.determine_conversation_stage()
         if stage == 7:
             break
-        legal_agent.step()
         foo = input("\n\n>> ")
         legal_agent.human_step(foo)
-        # stage = legal_agent.determine_conversation_stage()
 
     with open('legal_complaint.md', 'w') as writer:
         writer.write(conversation_history)

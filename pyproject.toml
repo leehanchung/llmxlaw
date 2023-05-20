@@ -2,7 +2,11 @@
 name = "llmxlaw"
 version = "0.1.0"
 description = ""
-authors = ["leehanchung <lee.hanchung@gmail.com>"]
+authors = [
+    "leehanchung <lee.hanchung@gmail.com>",
+    "Aaron Greenspan "<arron.greenspan@plainsite.org>",
+    "Giussipina"
+]
 readme = "README.md"
 
 [tool.poetry.dependencies]
