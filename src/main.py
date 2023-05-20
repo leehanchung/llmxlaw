@@ -11,11 +11,10 @@ from langchain.chat_models import ChatOpenAI
 
 from dotenv import load_dotenv
 from prompts import (
-    conversation_stages,
     stage_analyzer_inception_prompt_template,
     legal_agent_inception_prompt,
 )
-from config import VERBOSE
+from config import CONFIG, VERBOSE
 
 load_dotenv()
 verbose=VERBOSE
@@ -60,16 +59,8 @@ class LegalIntaker(Chain, BaseModel):
     current_conversation_stage: str = '1'
     stage_analyzer_chain: StageAnalyzerChain = Field(...)
     sales_conversation_utterance_chain: LegalIntakeConversationChain = Field(...)
-    conversation_stage_dict: Dict = {
-        '1': "Introduction: Start the conversation by introducing yourself and your company. Be polite and respectful while keeping the tone of the conversation professional. Your greeting should be welcoming. Always clarify in your greeting the reason why you are contacting the prospect.",
-        '2': "Qualification: Qualify the prospect by confirming if they are the right person to talk to regarding your product/service. Ensure that they have the authority to make purchasing decisions.",
-        '3': "Value proposition: Briefly explain how your product/service can benefit the prospect. Focus on the unique selling points and value proposition of your product/service that sets it apart from competitors.",
-        '4': "Needs analysis: Ask open-ended questions to uncover the prospect's needs and pain points. Listen carefully to their responses and take notes.",
-        '5': "Solution presentation: Based on the prospect's needs, present your product/service as the solution that can address their pain points.",
-        '6': "Objection handling: Address any objections that the prospect may have regarding your product/service. Be prepared to provide evidence or testimonials to support your claims.",
-        '7': "Close: Ask for the sale by proposing a next step. This could be a demo, a trial or a meeting with decision-makers. Ensure to summarize what has been discussed and reiterate the benefits."
-        }
-
+    conversation_stage_dict: Dict
+    conversation_purpose: str
     legal_intaker_name: str = "Ted Lasso"
     company_name: str = "Sleep Haven"
     conversation_type: str = "call"
@@ -143,29 +134,19 @@ class LegalIntaker(Chain, BaseModel):
             **kwargs,
         )
 
-# Set up of your agent
+def main():
+    llm = ChatOpenAI(temperature=0.0)
+    legal_agent = LegalIntaker.from_llm(llm, verbose=False, **CONFIG)
 
-# test the intermediate chains
-llm = ChatOpenAI(temperature=0.0)
+    stage = 0
+    legal_agent.seed_agent()
+    while stage != 7:
+        stage = legal_agent.determine_conversation_stage()
+        legal_agent.step()
+        foo = input("\n\n>> ")
+        legal_agent.human_step(foo)
+        stage = legal_agent.determine_conversation_stage()
 
-# Agent characteristics - can be modified
-config = dict(
-    legal_intaker_name = "Michael Ross",
-    company_name="Pearson Hardman",
-    conversation_purpose = "find out whether they are looking to achieve better sleep via buying a premier mattress.",
-    conversation_history=['Hello, this is Ted Lasso from Sleep Haven. How are you doing today? <END_OF_TURN>','User: I am well, howe are you?<END_OF_TURN>'],
-    conversation_type="call",
-    conversation_stage = conversation_stages.get('1', "Introduction: Start the conversation by introducing yourself and your company. Be polite and respectful while keeping the tone of the conversation professional.")
-)
 
-legal_agent = LegalIntaker.from_llm(llm, verbose=False, **config)
-
-# init sales agent
-stage = 0
-legal_agent.seed_agent()
-while stage != 7:
-    stage = legal_agent.determine_conversation_stage()
-    legal_agent.step()
-    foo = input("\n\n>> ")
-    legal_agent.human_step(foo)
-
+if __name__ == "__main__":
+    main()
