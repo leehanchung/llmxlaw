@@ -61,3 +61,9 @@ Complaint structure (format of numbered paragraphs):
 9. Request for Jury Trial
 
 10. Signature Block
+
+Version 0.2 potential features:
+
+- Anti-trolling string detection: search the user input for strings such as "sovereign citizen," "United States laws do not apply to me," etc.
+
+- Options to render as Word document as well as PDF
