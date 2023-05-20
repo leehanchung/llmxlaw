@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 from prompts import (
     conversation_stages,
     stage_analyzer_inception_prompt_template,
-    sales_agent_inception_prompt,
+    legal_agent_inception_prompt,
 )
 from config import VERBOSE
 
@@ -41,7 +41,7 @@ class SalesConversationChain(LLMChain):
     def from_llm(cls, llm: BaseLLM, verbose: bool = True) -> LLMChain:
         """Get the response parser."""
         prompt = PromptTemplate(
-            template=sales_agent_inception_prompt,
+            template=legal_agent_inception_prompt,
             input_variables=[
                 "salesperson_name",
                 "salesperson_role",
@@ -171,14 +171,14 @@ config = dict(
     conversation_stage = conversation_stages.get('1', "Introduction: Start the conversation by introducing yourself and your company. Be polite and respectful while keeping the tone of the conversation professional.")
 )
 
-sales_agent = SalesGPT.from_llm(llm, verbose=False, **config)
+legal_agent = SalesGPT.from_llm(llm, verbose=False, **config)
 
 # init sales agent
 stage = 0
-sales_agent.seed_agent()
+legal_agent.seed_agent()
 while stage != 7:
-    stage = sales_agent.determine_conversation_stage()
-    sales_agent.step()
+    stage = legal_agent.determine_conversation_stage()
+    legal_agent.step()
     foo = input("\n\n>> ")
-    sales_agent.human_step(foo)
+    legal_agent.human_step(foo)
 
