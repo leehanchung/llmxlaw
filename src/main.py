@@ -138,7 +138,7 @@ def main():
     llm = ChatOpenAI(temperature=0.0)
     legal_agent = LegalIntaker.from_llm(llm, verbose=False, **CONFIG)
 
-    stage = 0
+    stage = 1
     legal_agent.seed_agent()
     while stage != 7:
         stage = legal_agent.determine_conversation_stage()
@@ -146,6 +146,9 @@ def main():
         foo = input("\n\n>> ")
         legal_agent.human_step(foo)
         stage = legal_agent.determine_conversation_stage()
+
+    with open('legal_complaint.md', 'w') as writer:
+        print(conversation_history)
 
 
 if __name__ == "__main__":
