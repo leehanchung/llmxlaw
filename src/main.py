@@ -140,12 +140,14 @@ def main():
 
     stage = 1
     legal_agent.seed_agent()
-    while stage != 7:
+    while True:
         stage = legal_agent.determine_conversation_stage()
+        if stage == 7:
+            break
         legal_agent.step()
         foo = input("\n\n>> ")
         legal_agent.human_step(foo)
-        stage = legal_agent.determine_conversation_stage()
+        # stage = legal_agent.determine_conversation_stage()
 
     with open('legal_complaint.md', 'w') as writer:
         writer.write(conversation_history)
