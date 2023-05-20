@@ -1,6 +1,5 @@
 import os
-
-
+import time
 from typing import Dict, List, Any
 
 from langchain import LLMChain, PromptTemplate
@@ -53,7 +52,7 @@ class LegalIntakeConversationChain(LLMChain):
         return cls(prompt=prompt, llm=llm, verbose=verbose)
 
 class LegalIntaker(Chain, BaseModel):
-    """Controller model for the Sales Agent."""
+    """Controller model for the Legal Intaker Agent."""
 
     conversation_history: List[str] = []
     current_conversation_stage: str = '1'
@@ -61,8 +60,8 @@ class LegalIntaker(Chain, BaseModel):
     sales_conversation_utterance_chain: LegalIntakeConversationChain = Field(...)
     conversation_stage_dict: Dict
     conversation_purpose: str
-    legal_intaker_name: str = "Ted Lasso"
-    company_name: str = "Sleep Haven"
+    legal_intaker_name: str
+    company_name: str
     conversation_type: str
 
     def retrieve_conversation_stage(self, key):
@@ -140,14 +139,19 @@ def main():
     stage = 1
     legal_agent.seed_agent()
     while True:
-        print(f"Conversation Stage: {legal_agent.current_conversation_stage}")
+        print(f"\n\nConversation Stage: {legal_agent.current_conversation_stage}\n\n")
         legal_agent.determine_conversation_stage()
         legal_agent.step()
-        stage = legal_agent.determine_conversation_stage()
-        if stage == 7:
+        stage_id = legal_agent.determine_conversation_stage()
+        print(f"Current stage id: {stage_id}")
+        if stage_id == 8:
             break
-        foo = input("\n\n>> ")
-        legal_agent.human_step(foo)
+
+        user_input = input("\n\n>> ")
+        stripped_input = user_input.replace('\n', '')
+
+        # time.sleep(1)
+        legal_agent.human_step(stripped_input.replace('\n', ''))
 
     with open('legal_complaint.md', 'w') as writer:
         writer.write(conversation_history)

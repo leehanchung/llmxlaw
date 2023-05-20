@@ -6,7 +6,8 @@ conversation_stages = {
     '4': "Claim determination: Determine which legal claim applies to the dispute described in the quick summary.",
     '5': "Detailed facts: Ask the user for detailed facts in order to satisfy the elements of each claim.",
     '6': "Additional facts: Ask the user for any other facts that may be applicable to the situation.",
-    '7': "Relief: Determine what kind of relief the user is requesting from the court."
+    '7': "Relief: Determine what kind of relief the user is requesting from the court.",
+    '8': "Exit: when we gathered all the necessary information o generate a legal complaint",
 }
 
 stage_analyzer_inception_prompt_template = (
