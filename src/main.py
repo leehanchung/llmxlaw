@@ -63,7 +63,7 @@ class LegalIntaker(Chain, BaseModel):
     conversation_purpose: str
     legal_intaker_name: str = "Ted Lasso"
     company_name: str = "Sleep Haven"
-    conversation_type: str = "call"
+    conversation_type: str
 
     def retrieve_conversation_stage(self, key):
         return self.conversation_stage_dict.get(key, '1')
@@ -148,7 +148,7 @@ def main():
         stage = legal_agent.determine_conversation_stage()
 
     with open('legal_complaint.md', 'w') as writer:
-        print(conversation_history)
+        writer.write(conversation_history)
 
 
 if __name__ == "__main__":
