@@ -1,7 +1,7 @@
 
 # Conversation stages - can be modified
 conversation_stages = {
-    '1': "Hello: Start the conversation by introducing yourself explaining that you are here to help generate a formal complaint. Be polite and respectful while keeping the tone of the conversation professional. Your greeting should be welcoming. Always clarify in your greeting the reason why you are contacting the prospect.",
+    '1': "Hello: Start the conversation by introducing yourself explaining that you are here to help generate a formal complaint. Be polite and respectful while keeping the tone of the conversation professional. Do not ask how the user learned of your services.",
     '2': "Parties: Ask for basic information about the user or people filing the complaint and the various parties they are filing the complaint against.",
     '3': "Quick summary: Obtain a one or two sentence description of the dispute.",
     '4': "Claim determination: Determine which legal claim applies to the dispute described in the quick summary.",
