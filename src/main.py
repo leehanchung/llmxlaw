@@ -161,14 +161,18 @@ def main():
         content = file.read()
 
     # Use regex to find JSON (assumes your JSON starts and ends with {})
-    json_string = re.search(r'{.*}', content, re.DOTALL).group()
+    try:
+        json_string = re.search(r'{.*}', content, re.DOTALL).group()
 
-    # Convert the JSON string to a Python dictionary
-    data = json.loads(json_string)
+        # Convert the JSON string to a Python dictionary
+        data = json.loads(json_string)
 
-    # Write the Python dictionary to a new JSON file
-    with open('legal_complaint.json', 'w') as file:
-        json.dump(data, file)
+        # Write the Python dictionary to a new JSON file
+        with open('legal_complaint.json', 'w') as file:
+            json.dump(data, file)
+    except AttributeError:
+        print("No JSON found!!")
+        exit()
 
 
 if __name__ == "__main__":
