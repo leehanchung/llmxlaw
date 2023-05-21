@@ -1,5 +1,7 @@
 import os
 import time
+import json
+import re
 from typing import Dict, List, Any
 
 from langchain import LLMChain, PromptTemplate
@@ -44,7 +46,6 @@ class LegalIntakeConversationChain(LLMChain):
                 "legal_intaker_name",
                 "company_name",
                 "conversation_purpose",
-                "conversation_type",
                 "conversation_stage",
                 "conversation_history"
             ],
@@ -62,7 +63,6 @@ class LegalIntaker(Chain, BaseModel):
     conversation_purpose: str
     legal_intaker_name: str
     company_name: str
-    conversation_type: str
 
     def retrieve_conversation_stage(self, key):
         return self.conversation_stage_dict.get(key, '1')
@@ -106,7 +106,6 @@ class LegalIntaker(Chain, BaseModel):
             conversation_purpose = self.conversation_purpose,
             conversation_history="\n".join(self.conversation_history),
             conversation_stage = self.current_conversation_stage,
-            conversation_type=self.conversation_type
         )
         
         # Add agent's response to conversation history
@@ -139,13 +138,13 @@ def main():
     stage = 1
     legal_agent.seed_agent()
     while True:
+        stage = legal_agent.determine_conversation_stage()
         print(f"\n\nConversation Stage: {legal_agent.current_conversation_stage}\n\n")
-        legal_agent.determine_conversation_stage()
+        print(f"Current stage: {stage}")
         legal_agent.step()
-        stage_id = legal_agent.determine_conversation_stage()
-        print(f"Current stage id: {stage_id}")
-        if stage_id == 8:
+        if "Exit" in legal_agent.current_conversation_stage:
             break
+        # stage_id = legal_agent.determine_conversation_stage()
 
         user_input = input("\n\n>> ")
         stripped_input = user_input.replace('\n', '')
@@ -154,7 +153,22 @@ def main():
         legal_agent.human_step(stripped_input.replace('\n', ''))
 
     with open('legal_complaint.md', 'w') as writer:
-        writer.write(conversation_history)
+        writer.write('\n\n'.join(legal_agent.conversation_history))
+
+
+
+    with open('legal_complaint.md', 'r') as file:
+        content = file.read()
+
+    # Use regex to find JSON (assumes your JSON starts and ends with {})
+    json_string = re.search(r'{.*}', content, re.DOTALL).group()
+
+    # Convert the JSON string to a Python dictionary
+    data = json.loads(json_string)
+
+    # Write the Python dictionary to a new JSON file
+    with open('legal_complaint.json', 'w') as file:
+        json.dump(data, file)
 
 
 if __name__ == "__main__":
