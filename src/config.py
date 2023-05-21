@@ -5,7 +5,6 @@ CONFIG = dict(
     legal_intaker_name = "AI",
     company_name="Stanford CodeX Hackathon",
     conversation_stage_dict=conversation_stages,
-    conversation_type="consulting interview",
     conversation_purpose = """help generate a legal complaint that would be ready to file in civil court.""",
     conversation_history=[
         """'Hello, this is the Stanford CodeX Hackathon Legal Complaint Generator. Please tell me your name? <END_OF_TURN>'
